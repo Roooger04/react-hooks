@@ -66,12 +66,20 @@ function Board() {
     )
   }
 
+  function RenderSquare({i}) {
+    return (
+      <button className="square" onClick={() => selectSquare(i)}>
+        {squares[i]}
+      </button>
+    )
+  }
+
   return (
     <div>
       {/* 🐨 put the status in the div below */}
       <div className="status">{status}</div>
       <div className="board-row">
-        {renderSquare(0)}
+        <RenderSquare i={0} />
         {renderSquare(1)}
         {renderSquare(2)}
       </div>
@@ -88,6 +96,7 @@ function Board() {
       <button className="restart" onClick={restart}>
         restart
       </button>
+      <p>{JSON.stringify(squares)}</p>
     </div>
   )
 }
