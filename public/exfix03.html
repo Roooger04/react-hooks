@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-bt">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercício de Fixação 3</title>
+  <style>
+    label {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@17.0.0/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.12.4/babel.js"></script>
+
+  <script type="text/babel">
+
+    /* Converta a função abaixo em um componente. */
+    function InputSet({id, labelText, onInputChange}) {
+    //function InputSet(props) {
+    //function InputSet({...props}) {
+      return (
+        <div>
+          <label htmlFor={id}>{labelText}</label>
+          <input id={id} type="number" onChange={onInputChange} />
+        </div>
+      )
+    }
+
+    /* Converta esta função em um componente */
+    function Result({imc, classif}) {
+      return (
+        <> {/* Fragment */}
+          <div className="result">IMC: {imc}</div>
+          <div className="result">{classif}</div>
+        </>
+      )     
+    }
+
+    function Form() {
+
+      /* Crie as seguintes variáveis de estado:
+         * peso
+         * altura
+         * classif
+         * imc
+      */
+     const [peso, setPeso] = React.useState()
+     const [altura, setAltura] = React.useState()
+     const [classif, setClassif] = React.useState()
+     const [imc, setImc] = React.useState()
+
+      function handleInputChange(event) {
+        /* Faça as modificações necessárias na manipulação das variáveis de estado
+           nas linhas abaixo. */
+        if(event.target.id === 'peso') setPeso(event.target.value) 
+        else if(event.target.id === 'altura') setAltura(event.target.value)        
+      }
+
+      /* Use o código a seguir dentro da função seguinte em um useEffect() tendo
+        como dependências as variáveis de estado estadoPeso e estadoAltura.
+        Faça as modificações necessárias na manipulação das variáveis de estado
+        para que o código funcione. 
+      */
+
+      React.useEffect(() =>{
+          
+        if(isNaN(peso) || isNaN(altura)) setImc('-----')
+        else setImc(peso / altura ** 2)
+
+        if(imc < 18.5) 
+          setClassif('Abaixo do peso')
+        else if(imc > 18.5 && imc < 25)
+          setClassif('Peso Normal')
+        else if(imc >= 25 && imc < 30)
+          setClassif('Sobrepeso')
+        else if(imc >= 30 && imc < 35)
+          setClassif('Obesidade Grau I')
+        else if(imc >= 35 && imc < 40)
+          setClassif('Obesidade Grau II')
+        else if(imc >= 40)
+          setClassif('Obesidade Grau III ou Mórbida')
+        else
+          setClassif('')
+      },[peso, altura])
+      
+      return (
+        <>
+        <h1>Cálculo do IMC</h1>
+        <form>
+          { /* Substitua as chamadas de função abaixo pelos componentes correspondentes */ }
+          { /*inputSet('peso', 'Peso (kg):', handleInputChange)*/}
+          <InputSet id="peso" labelText="Peso (Kg):" onInputChange={handleInputChange} />
+          { /*inputSet('altura', 'Altura (m):', handleInputChange)*/}
+          <InputSet id="altura" labelText="Altura (m):" onInputChange={handleInputChange} />
+          { /*result(estadoImc, estadoClassif)*/}
+          <Result imc={imc} classif={classif} />
+        </form>
+        </>
+      )
+    }
+
+    ReactDOM.render(<Form />, document.getElementById('root'))
+
+  </script>
+
+</body>
+
+</html>
